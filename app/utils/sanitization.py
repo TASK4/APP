@@ -1,10 +1,26 @@
 import re
+import html
 
 def sanitize_string(value: str) -> str:
-    # Loại bỏ script, HTML tags, và khoảng trắng thừa
-    value = re.sub(r'<.*?>', '', value)
-    value = re.sub(r'\s+', ' ', value).strip()
-    return value
+    if not isinstance(value, str):
+        return value
+        
+    # First decode any HTML entities
+    value = html.unescape(value)
+    
+    # Remove script tags and their content
+    value = re.sub(r'<script.*?>.*?</script>', '', value, flags=re.IGNORECASE | re.DOTALL)
+    
+    # Remove other HTML tags but keep their content
+    value = re.sub(r'<[^>]+>', '', value)
+    
+    # Normalize whitespace
+    value = ' '.join(value.split())
+    
+    # Remove any remaining special characters except alphanumeric, spaces and basic punctuation
+    value = re.sub(r'[^\w\s-]', '', value)
+    
+    return value.strip()
 
 def sanitize_input(data):
     if isinstance(data, dict):
@@ -13,5 +29,4 @@ def sanitize_input(data):
         return [sanitize_input(item) for item in data]
     elif isinstance(data, str):
         return sanitize_string(data)
-    else:
-        return data
+    return data
