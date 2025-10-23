@@ -1,23 +1,19 @@
-# APP-1: API Làm Sạch Dữ Liệu Đầu Vào
+1. Tạo môi trường ảo
 
-Ứng dụng API sử dụng FastAPI, tự động làm sạch dữ liệu đầu vào thông qua middleware.
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+venv\Scripts\activate     # Windows
 
-## Tính năng
-- Tự động loại bỏ HTML/script tags, khoảng trắng thừa khỏi dữ liệu đầu vào.
-- Bảo vệ API khỏi các tấn công XSS và dữ liệu không hợp lệ.
+2. Cài đặt thư viện
 
-## Hướng dẫn sử dụng
-1. Cài đặt dependencies:
-   ```
-   pip install -r requirements.txt
-   ```
-2. Chạy ứng dụng:
-   ```
-   uvicorn app.main:app --reload
-   ```
-3. Gửi request tới các endpoint, dữ liệu đầu vào sẽ được làm sạch tự động.
+pip install -r requirements.txt
 
-## Kiểm thử
-```
-pytest tests/
-```
+3. Tạo file .env
+
+SECRET_KEY=your-secret-key-here
+DATABASE_URL=mssql+pyodbc://user:password@host:port/dbname?driver=ODBC+Driver+17+for+SQL+Server
+
+4. Chạy ứng dụng
+
+uvicorn app.main:app --reload
+
