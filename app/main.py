@@ -6,6 +6,9 @@ from . import models
 from fastapi.responses import JSONResponse
 import traceback # Import traceback
 
+# === BƯỚC 5: IMPORT THÊM MIDDLEWARE ===
+from .middleware.sanitizer import SanitizerMiddleware
+
 # Create all database tables
 Base.metadata.create_all(bind=engine)
 
@@ -14,6 +17,11 @@ app = FastAPI(
     description="API for user registration demo.",
     version="1.0.0"
 )
+
+# === BƯỚC 5: KÍCH HOẠT MIDDLEWARE ===
+# Dòng này sẽ kích hoạt bộ lọc cho tất cả các request
+app.add_middleware(SanitizerMiddleware)
+
 
 @app.on_event("startup")
 async def startup_event():

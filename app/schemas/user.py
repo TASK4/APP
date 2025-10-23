@@ -1,20 +1,18 @@
+# app/schemas/user.py
 from pydantic import BaseModel, EmailStr, Field, validator
 from typing import Optional
 
 # --- Schema đăng nhập ---
 class LoginSchema(BaseModel):
-    email: EmailStr
-    password: str
-
-    # Thêm schema mới cho việc đăng nhập
+    # Sửa lại: Chỉ cần username và password
     username: str
     password: str
+    # Xóa các trường bị trùng lặp
 
 
 # --- Schema cập nhật user ---
 class UpdateUserSchema(BaseModel):
     username: Optional[str] = Field(None, min_length=3, max_length=50)
-    email: Optional[EmailStr] = None
     role_id: Optional[int] = None
 
 
@@ -27,21 +25,20 @@ class ChangePasswordSchema(BaseModel):
 class UserResponse(BaseModel):
     id: int
     username: str
-    email: EmailStr
     role_id: int
 
     class Config:
         orm_mode = True
 
-# Schema for creating a user (input)
+
 class UserCreate(BaseModel):
+
     username: str
     password: str
 
-# Schema for reading a user (output)
 class User(BaseModel):
     id: int
-    email: EmailStr
+    username: str 
 
     class Config:
         from_attributes = True
@@ -51,4 +48,4 @@ class Token(BaseModel):
     token_type: str
 
 class TokenData(BaseModel):
-    email: Optional[str] = None
+    username: Optional[str] = None

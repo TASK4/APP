@@ -16,13 +16,12 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     """
     Create a new user.
     """
-    # Dùng user.username làm email để lưu vào DB
-    email_to_register = user.username
-    logger.info(f"Attempting to register new user: {email_to_register}")
-    
-    db_user = db.query(models.User).filter(models.User.email == email_to_register).first()
+    username_to_register = user.username
+    logger.info(f"Attempting to register new user: {username_to_register}")
+
+    db_user = db.query(models.User).filter(models.User.username == username_to_register).first()
     if db_user:
-        logger.warning(f"Registration failed: Username {email_to_register} already registered.")
+        logger.warning(f"Registration failed: Username {username_to_register} already registered.")
         raise HTTPException(status_code=400, detail="Username already registered")
     
     default_role = db.query(models.Role).filter(models.Role.name == "user").first()
@@ -31,7 +30,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
     hashed_password = get_password_hash(user.password)
     new_user = models.User(
-        email=email_to_register, 
+        username=username_to_register, 
         hashed_password=hashed_password, 
         role_id=default_role.id
     )
@@ -39,8 +38,8 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
-    
-    logger.info(f"User {email_to_register} created successfully with ID {new_user.id}.")
+
+    logger.info(f"User {username_to_register} created successfully with ID {new_user.id}.")
     return new_user
 
 # --- Đăng nhập ---
@@ -50,7 +49,7 @@ def login_for_access_token(form_data: schemas.UserCreate, db: Session = Depends(
     Dùng OAuth2PasswordRequestForm (Swagger sẽ tự hiện form username/password)
     """
     logger.info(f"Login attempt for user: {form_data.username}")
-    user = db.query(models.User).filter(models.User.email == form_data.username).first()
+    user = db.query(models.User).filter(models.User.username == form_data.username).first()
     if not user or not verify_password(form_data.password, user.hashed_password):
         logger.warning(f"Failed login attempt for user: {form_data.username}")
         raise HTTPException(
@@ -58,7 +57,7 @@ def login_for_access_token(form_data: schemas.UserCreate, db: Session = Depends(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token = create_access_token(data={"sub": user.email})
+    access_token = create_access_token(data={"sub": user.username})
     logger.info(f"User {form_data.username} logged in successfully.")
     return {"access_token": access_token, "token_type": "bearer"}
 
