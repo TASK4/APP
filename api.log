@@ -288,3 +288,24 @@ fastapi.exceptions.ResponseValidationError: 1 validation errors:
 2025-10-23 13:51:37,047 - api_logger - INFO - Attempting to register new user: nghi
 2025-10-23 13:51:37,501 - api_logger - INFO - User nghi created successfully with ID 1.
 2025-10-23 13:51:37,503 - api_logger - INFO - Response: status_code=201
+2025-10-23 13:54:29,768 - api_logger - INFO - Application startup.
+2025-10-23 13:54:33,087 - api_logger - INFO - Request: GET /docs
+2025-10-23 13:54:33,088 - api_logger - INFO - Response: status_code=200
+2025-10-23 13:54:33,238 - api_logger - INFO - Request: GET /openapi.json
+2025-10-23 13:54:33,244 - api_logger - INFO - Response: status_code=200
+2025-10-23 13:54:47,214 - api_logger - INFO - Request: POST /auth/register
+2025-10-23 13:54:47,246 - api_logger - INFO - Attempting to register new user: 11
+2025-10-23 13:54:47,712 - api_logger - INFO - User 11 created successfully with ID 2.
+2025-10-23 13:54:47,714 - api_logger - INFO - Response: status_code=201
+2025-10-23 14:00:31,200 - api_logger - INFO - Request: POST /auth/register
+2025-10-23 14:00:31,204 - api_logger - INFO - Attempting to register new user: abc
+2025-10-23 14:00:31,744 - api_logger - INFO - User abc created successfully with ID 3.
+2025-10-23 14:00:31,747 - api_logger - INFO - Response: status_code=201
+2025-10-23 14:00:55,826 - api_logger - INFO - Request: POST /auth/login
+2025-10-23 14:00:55,828 - api_logger - INFO - Login attempt for user: abc
+2025-10-23 14:00:56,234 - api_logger - INFO - User abc logged in successfully.
+2025-10-23 14:00:56,236 - api_logger - INFO - Response: status_code=200
+2025-10-23 14:01:33,848 - api_logger - INFO - Request: POST /auth/register
+2025-10-23 14:01:33,851 - api_logger - INFO - Attempting to register new user: userxss
+2025-10-23 14:01:34,248 - api_logger - INFO - User userxss created successfully with ID 4.
+2025-10-23 14:01:34,249 - api_logger - INFO - Response: status_code=201
